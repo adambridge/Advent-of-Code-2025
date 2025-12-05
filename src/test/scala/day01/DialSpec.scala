@@ -102,4 +102,9 @@ The dial is rotated L82 to point at 32; during this rotation, it points at 0 onc
     val lines: List[String] = Source.fromResource("test01.txt").getLines.toList
     Dial.passwordv2(lines) should be(6)
   }
+
+  //Be careful: if the dial were pointing at 50, a single rotation like R1000 would cause the dial to point at 0 ten times before returning back to 50!
+  "Dial at 50" should "pass zero ten times after a R1000" in {
+    Dial(50).zerosPassed(1000) should be (10)
+  }
 }
