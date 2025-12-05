@@ -86,5 +86,17 @@ partial(-99)
 partial(100)
 partial(101)
 
+Dial(50).turn(1050)
+fullTurns(1050)
+partial(1050)
+Dial(50).partialTurnPassedZero(50)
+
 passwordv2(testLines)
 passwordv2(lines)
+
+val turns = lines.map(parseTurn)
+val dialsAndTurns = listDialsAndTurns(Dial(50), turns)
+val dialsTurnsAndZerosPassed = dialsAndTurns.map { (d, t) =>
+  (d, t, d.zerosPassed(t))
+}
+println(dialsTurnsAndZerosPassed)

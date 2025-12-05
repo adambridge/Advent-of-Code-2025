@@ -28,7 +28,7 @@ class DialSpec extends AnyFlatSpec with Matchers {
     Dial.password(lines) should be (3)
   }
 
-  "The part 1 input" should "have a password of 980" in {
+  "The full input" should "have a password of 980" in {
     val testResource = Source.fromResource("input01.txt")
     val testLines: List[String] = testResource.getLines.toList
 
@@ -37,17 +37,17 @@ class DialSpec extends AnyFlatSpec with Matchers {
 
   /*
   The dial starts by pointing at 50.
-The dial is rotated L68 to point at 82; during this rotation, it points at 0 once.
-The dial is rotated L30 to point at 52.
-The dial is rotated R48 to point at 0.
-The dial is rotated L5 to point at 95.
-The dial is rotated R60 to point at 55; during this rotation, it points at 0 once.
-The dial is rotated L55 to point at 0.
-The dial is rotated L1 to point at 99.
-The dial is rotated L99 to point at 0.
-The dial is rotated R14 to point at 14.
-The dial is rotated L82 to point at 32; during this rotation, it points at 0 once.
-   */
+  The dial is rotated L68 to point at 82; during this rotation, it points at 0 once.
+  The dial is rotated L30 to point at 52.
+  The dial is rotated R48 to point at 0.
+  The dial is rotated L5 to point at 95.
+  The dial is rotated R60 to point at 55; during this rotation, it points at 0 once.
+  The dial is rotated L55 to point at 0.
+  The dial is rotated L1 to point at 99.
+  The dial is rotated L99 to point at 0.
+  The dial is rotated R14 to point at 14.
+  The dial is rotated L82 to point at 32; during this rotation, it points at 0 once.
+  */
   "A Dial" should "count zeros passed #1" in {
     Dial(50).turn(-68) should be(Dial(82))
     Dial(82).zerosPassed(-68) should be(1)
@@ -106,5 +106,14 @@ The dial is rotated L82 to point at 32; during this rotation, it points at 0 onc
   //Be careful: if the dial were pointing at 50, a single rotation like R1000 would cause the dial to point at 0 ten times before returning back to 50!
   "Dial at 50" should "pass zero ten times after a R1000" in {
     Dial(50).zerosPassed(1000) should be (10)
+    Dial(50).zerosPassed(-1000) should be(10)
+    Dial(0).zerosPassed(1050) should be(11)
+  }
+
+  "The full input" should "have a v2 password of 5961" in {
+    val testResource = Source.fromResource("input01.txt")
+    val lines: List[String] = testResource.getLines.toList
+
+    Dial.passwordv2(lines) should be(5961)
   }
 }
