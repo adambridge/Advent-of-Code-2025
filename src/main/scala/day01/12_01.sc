@@ -10,69 +10,81 @@ val testLines: List[String] = testResource.getLines.toList
 val resource = Source.fromResource("input01.txt")
 val lines: List[String] = resource.getLines.toList
 
-
+Dial.normalize(100)
+Dial.normalize(-100)
 
 password(testLines)
 password(lines)
 
 val easyLines = List("L0", "R0", "L5", "R5")
-val easyMoves = easyLines.map(parseMove)
-listDials(Dial(50), easyMoves)
+val easyTurns = easyLines.map(parseTurn)
+listDials(Dial(50), easyTurns)
 
 val easyLines2 = List("L50", "R10")
-easyLines2.map(parseMove)
+easyLines2.map(parseTurn)
 
 // Part 2
 
-def passedZero(dialAndMove: (Dial, Int)): Int = {
-  val d: Int = dialAndMove._1.setting
-  val m: Int = dialAndMove._2
-  d == 0 || (m > 0 && m > d) || (m < 0 && -m > MAX_DIAL - d)
+99 / 100
+100 / 100
+(0 + 99 + 1) / NUM_SETTINGS
+101 / 100
+201 / 100d
 
-  if (m > 0 && m > d) 1 + (m - 1) / NUM_SETTINGS
-  else if (m < 0 && -m > MAX_DIAL - d) 1 + (-m - 1) / NUM_SETTINGS
-  else 0
-}
+// Turn ending on 0 passes 1 zero if turn is
+// <= 100
+Dial(0).zerosPassed(0) // 0
+Dial(0).zerosPassed(99) // 1
+Dial(0).zerosPassed(100) // 1
+Dial(0).zerosPassed(101) // 2
+Dial(0).zerosPassed(200) // 2
+Dial(0).zerosPassed(201) // 3
 
-def listDialsAndMoves(dialStart: Dial, moves: List[Int]): Seq[(Dial, Int)] = {
-  moves.foldLeft
-    (List((dialStart, 0)))
-    ((dialList, move) => {
-      val newDial = dialList.head._1.turn(move)
-      (newDial, move) :: dialList
-    }
-    )
-}
+Dial(1).zerosPassed(0) // 0
+Dial(1).zerosPassed(99) // 1
+Dial(1).zerosPassed(100) // 1
+Dial(1).zerosPassed(101) // 2
+Dial(1).zerosPassed(200) // 2
+Dial(1).zerosPassed(201) // 3
 
-def passwordv2(lines: List[String]): Int = {
-  val dialStart: Dial = Dial(50)
-  val moves: List[Int] = lines.map(parseMove)
-  val dialsAndMoves = listDialsAndMoves(dialStart, moves)
+// Turn of 100 will always pass (or end on)
+// exactly one zero regardless of end
+Dial(0).zerosPassed(100) // 1
+Dial(1).zerosPassed(100) // 1
+Dial(99).zerosPassed(100) // 1
 
-//  println(dialsAndMoves)
-//  println(dialsAndMoves.map(passedZero))
+Dial(10).partialTurnPassedZero(10)
+Dial(82).partialTurnPassedZero(-30)
+NUM_SETTINGS
+Dial.normalize(-30)
 
-  dialsAndMoves.map(passedZero).sum
-}
+//Symmetry
+Dial(0).zerosPassed(0) // 0
+Dial(0).zerosPassed(-99) // 1
+Dial(0).zerosPassed(-100) // 1
+Dial(0).zerosPassed(-101) // 2
+Dial(0).zerosPassed(-200) // 2
+Dial(0).zerosPassed(-201) // 3
 
-listDialsAndMoves(Dial(50), List(1000))
-listDialsAndMoves(Dial(50), List(1000)).map(passedZero)
-listDialsAndMoves(Dial(50), List(-1000)).map(passedZero)
-listDialsAndMoves(Dial(0), List(1000)).map(passedZero)
-listDialsAndMoves(Dial(0), List(-1000)).map(passedZero)
-listDialsAndMoves(Dial(0), List(1100)).map(passedZero)
-listDialsAndMoves(Dial(0), List(-1100)).map(passedZero)
-listDialsAndMoves(Dial(0), List(1099)).map(passedZero)
-listDialsAndMoves(Dial(0), List(-1099)).map(passedZero)
-passedZero(Dial(99), -3)
-passedZero(Dial(99), -2)
-passedZero(Dial(99), -1)
-passedZero(Dial(1), 3)
-passedZero(Dial(1), 2)
-passedZero(Dial(1), 1)
-passedZero(Dial(1), 103)
-passedZero(Dial(1), 102)
-passedZero(Dial(1), 101)
+Dial(1).zerosPassed(0) // 0
+Dial(1).zerosPassed(-99) // 0
+Dial(1).zerosPassed(-100) // 1
+Dial(1).zerosPassed(-101) // 2
+Dial(1).zerosPassed(-200) // 2
+Dial(1).zerosPassed(-201) // 3
+
+Dial(1).partialTurnPassedZero(0)
+Dial(1).partialTurnPassedZero(-99)
+
+partial(450)
+partial(-450)
+partial(50)
+partial(-50)
+partial(0)
+partial(99)
+partial(-99)
+partial(100)
+partial(101)
 
 passwordv2(testLines)
 passwordv2(lines)
